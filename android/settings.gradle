@@ -1,0 +1,3 @@
+rootProject.name = 'CRUDbasicRN'
+
+include ':app'
