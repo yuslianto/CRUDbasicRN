@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import DatePicker from 'react-native-datepicker';
 import RadioForm from 'react-native-simple-radio-button';
+import Loading from 'react-native-whc-loading'
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
     }
   }
   render() {
-    const {nama, jk, tgl_lahir, email, telp, pekerjaan} = this.state.formData;
+    const {nama, tgl_lahir, email, telp, pekerjaan} = this.state.formData;
     return (
       <ScrollView>
         <KeyboardAvoidingView style={styles.container} enabled>
@@ -171,13 +172,41 @@ class App extends Component {
             </TouchableHighlight>
           </View>
         </KeyboardAvoidingView>
+        <Loading ref="loading"/>
       </ScrollView>
     );
   }
-  _savedata = ()=>{
-    alert(JSON.stringify(this.state.formData));
-  }
+  _savedata = async () => {
+
+    this.refs.loading.show();
+    try {
+      await fetch("http://192.168.43.228/react-native-services/service_crud_php.php", {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state.formData),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //return responseJson.movies;
+        setTimeout(() => {
+          this.refs.loading.close();
+          alert(JSON.stringify(responseJson));
+        }, 2000)
+      })
+      .catch((error) => {
+        this.refs.loading.close();
+        console.error(error);
+      });
+    } catch (error) {
+      this.refs.loading.close();
+      alert(error)
+    }
+  };
 }
+
 export default App;
 
 const styles = StyleSheet.create({
