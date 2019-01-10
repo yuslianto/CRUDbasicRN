@@ -180,7 +180,9 @@ class App extends Component {
 
     this.refs.loading.show();
     try {
-      await fetch("http://192.168.43.228/react-native-services/service_crud_php.php", {
+      //https://api.backendless.com/CF3C06D3-20E3-344C-FF85-0ABC2E86BD00/C641F582-C12F-A45B-FF47-3F3271092B00/data/people
+      //"http://192.168.43.228/react-native-services/service_crud_php.php
+        await fetch("https://api.backendless.com/CF3C06D3-20E3-344C-FF85-0ABC2E86BD00/C641F582-C12F-A45B-FF47-3F3271092B00/data/people",{
         method: 'POST',
         headers: {
           Accept: 'application/json',
