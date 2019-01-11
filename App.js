@@ -12,6 +12,9 @@ import {
 import DatePicker from 'react-native-datepicker';
 import RadioForm from 'react-native-simple-radio-button';
 import Loading from 'react-native-whc-loading'
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
+import ImagePicker from 'react-native-image-crop-picker';
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +25,7 @@ class App extends Component {
         {label: 'Pria', value: 0 },
         {label: 'Wanita', value: 1 }
       ],
+      avatarSrc: [],
       formData:{
         nama: '',
         jk: 0,
@@ -32,11 +36,42 @@ class App extends Component {
       }
     }
   }
+
+  _openGallery=()=>{
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+      this.setState({
+        avatarSrc: image
+      });
+    });
+  }
+
   render() {
     const {nama, tgl_lahir, email, telp, pekerjaan} = this.state.formData;
+    const sourceUrl = this.state.avatarSrc.path 
+                      ? { url: this.state.avatarSrc.path }
+                      : require("./src/img/noimage.png");
     return (
       <ScrollView>
         <KeyboardAvoidingView style={styles.container} enabled>
+          
+          <View style={[styles.row, { alignItems: "center" }]}>
+            <TouchableHighlight onPress={this._openGallery}>
+              <Image 
+                source={sourceUrl} 
+                indicator={ProgressBar} 
+                style={{
+                  width: 150, 
+                  height: 150, 
+                  resizeMode: 'cover'
+                }}/>
+            </TouchableHighlight>
+          </View>
+          
           <View style={styles.row}>
             <Text style={styles.label}>Nama</Text>
             <TextInput
@@ -181,8 +216,9 @@ class App extends Component {
     this.refs.loading.show();
     try {
       //https://api.backendless.com/CF3C06D3-20E3-344C-FF85-0ABC2E86BD00/C641F582-C12F-A45B-FF47-3F3271092B00/data/people
-      //"http://192.168.43.228/react-native-services/service_crud_php.php
-        await fetch("https://api.backendless.com/CF3C06D3-20E3-344C-FF85-0ABC2E86BD00/C641F582-C12F-A45B-FF47-3F3271092B00/data/people",{
+      //http://192.168.43.228/react-native-services/service_crud_php.php
+      await fetch("https://api.backendless.com/CF3C06D3-20E3-344C-FF85-0ABC2E86BD00/C641F582-C12F-A45B-FF47-3F3271092B00/data/people",{
+      //await fetch("http://192.168.43.228/react-native-services/service_crud_php.php",{
         method: 'POST',
         headers: {
           Accept: 'application/json',

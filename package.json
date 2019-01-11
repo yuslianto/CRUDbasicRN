@@ -10,6 +10,9 @@
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-datepicker": "^1.7.2",
+    "react-native-image-crop-picker": "^0.21.3",
+    "react-native-image-progress": "^1.1.1",
+    "react-native-progress": "^3.5.0",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-whc-loading": "^1.0.3"
   },
